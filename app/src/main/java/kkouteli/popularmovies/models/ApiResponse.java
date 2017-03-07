@@ -7,7 +7,7 @@ package kkouteli.popularmovies.models;
 /**
  * Holds response data
  */
-public class ApiResponse {
+public final class ApiResponse {
 
     private String  mStatusMessage;
     private int     mStatusCode;

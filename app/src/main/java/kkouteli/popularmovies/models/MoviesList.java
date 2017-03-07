@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * MoviesList represents a list of movies returned by an API call, such as the
  * implemented "Popular" and "Top rated" requests.
  */
-public class MoviesList {
+public final class MoviesList {
     private int mPage;
     private int mTotalPages;
     private int mTotalResults;

@@ -20,6 +20,8 @@ public final class Movie {
     private double mVoteAverage;
     private long mVoteCount;
 
+    public Movie() {}
+
     public long getId() {
         return mId;
     }
