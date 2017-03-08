@@ -6,9 +6,6 @@ package kkouteli.popularmovies;
 
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
-
-import kkouteli.popularmovies.utilities.ApiRequest;
 import kkouteli.popularmovies.utilities.MovieDbApi;
 import kkouteli.popularmovies.utilities.MovieDbApiException;
 

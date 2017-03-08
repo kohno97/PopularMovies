@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidParameterException;
@@ -208,6 +211,83 @@ public class MovieDbApi {
         return getUrlFromUri(uri);
     }
 
+
+    /**
+     * HTTP response code indicating success
+     */
+    public static final int CODE_SUCCESS = HttpURLConnection.HTTP_OK;
+
+    /**
+     * Size of the buffer to use for reading API request's response.
+     */
+    private static final int BUFFER_SIZE = 4096;  // 4kBytes
+
+    /**
+     * Perform an API call in order to retrieve data from tMDB
+     * @param url The URL for the API call
+     * @return A Result object holding the required information (response code and body)
+     * @throws IOException in case of network or other I/O error
+     */
+    public static Result execute(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        int responseCode = connection.getResponseCode();
+        String responseBody = "";
+        try {
+            StringBuilder builder = new StringBuilder();
+
+            InputStream stream = connection.getErrorStream();
+            if (stream == null) {
+                stream = connection.getInputStream();
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+            try {
+                int count;
+                char[] buffer = new char[BUFFER_SIZE];
+                // Note: intended assignment to count:
+                while ((count = br.read(buffer, 0, BUFFER_SIZE)) >= 0) {
+                    builder.append(buffer, 0, count);
+                }
+            }
+            finally {
+                br.close();
+            }
+            responseBody = builder.toString();
+        }
+        finally {
+            connection.disconnect();
+        }
+        return new Result(responseBody, responseCode);
+    }
+
+    /**
+     * Result is a simple class meant to hold the response code and body, which
+     * can be retrieved with the getResponseCode and getResponseBody() methods respectively
+     * Query whether the API call was successful with the isSuccessful method
+     */
+    public static class Result {
+
+        private String mResponseBody;
+
+        private int mResponseCode;
+
+        public Result(String body, int code) {
+            mResponseBody = body;
+            mResponseCode = code;
+        }
+
+        public String getResponseBody() {
+            return mResponseBody;
+        }
+
+        public int getResponseCode() {
+            return mResponseCode;
+        }
+
+        public boolean isSuccessful() {
+            return CODE_SUCCESS == mResponseCode;
+        }
+    }
 
     private static URL getUrlFromUri(Uri uri) throws MovieDbApiException {
         String urlString = uri.toString();
