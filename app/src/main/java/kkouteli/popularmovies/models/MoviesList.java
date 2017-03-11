@@ -11,10 +11,16 @@ import java.util.ArrayList;
  * implemented "Popular" and "Top rated" requests.
  */
 public final class MoviesList {
+
     private int mPage;
     private int mTotalPages;
     private int mTotalResults;
     private ArrayList<Movie> mMovies;
+
+    public static final String TAG_PAGE          = "page";
+    public static final String TAG_TOTAL_RESULTS = "total_results";
+    public static final String TAG_TOTAL_PAGES   = "total_pages";
+    public static final String TAG_RESULTS       = "results";
 
     public MoviesList() {
         mMovies = new ArrayList<>();

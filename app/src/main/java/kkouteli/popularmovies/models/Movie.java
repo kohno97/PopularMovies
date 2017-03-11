@@ -4,6 +4,8 @@
 
 package kkouteli.popularmovies.models;
 
+import java.util.SimpleTimeZone;
+
 /**
  * This class is used to hold data for a specific movie as returned from "The Movie DB"
  * Movie contains only a minimal set of fields returned by all APIs used in this application
@@ -19,6 +21,16 @@ public final class Movie {
     private double mPopularity;
     private double mVoteAverage;
     private long mVoteCount;
+
+    public static final String TAG_ID               = "id";
+    public static final String TAG_TITLE            = "title";
+    public static final String TAG_OVERVIEW         = "overview";
+    public static final String TAG_POSTER_PATH      = "poster_path";
+    public static final String TAG_BACKDROP_PATH    = "backdrop_path";
+    public static final String TAG_ORIGINAL_TITLE   = "original_title";
+    public static final String TAG_POPULARITY       = "popularity";
+    public static final String TAG_VOTE_AVERAGE     = "vote_average";
+    public static final String TAG_VOTE_COUNT       = "vote_count";
 
     public Movie() {}
 

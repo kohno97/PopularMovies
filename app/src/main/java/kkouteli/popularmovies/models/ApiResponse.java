@@ -13,6 +13,10 @@ public final class ApiResponse {
     private int     mStatusCode;
     private boolean mSuccess;
 
+    public static final String TAG_STATUS_MESSAGE   = "status_message";
+    public static final String TAG_STATUS_CODE      = "status_code";
+    public static final String TAG_SUCCESS          = "success";
+
     public ApiResponse() {
         this(null, 0, false);
     }

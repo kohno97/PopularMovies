@@ -21,9 +21,9 @@ public class JsonParser {
 
     public ApiResponse getApiResponse() throws JSONException {
         return new ApiResponse(
-                mObject.getString("status_message"),
-                mObject.getInt("status_code"),
-                mObject.getBoolean("success")
+                mObject.getString(ApiResponse.TAG_STATUS_MESSAGE),
+                mObject.getInt(ApiResponse.TAG_STATUS_CODE),
+                mObject.getBoolean(ApiResponse.TAG_SUCCESS)
         );
     }
 
@@ -33,23 +33,23 @@ public class JsonParser {
 
     public Movie getMovie(JSONObject object) throws JSONException {
         return (new Movie())
-                .setId(object.getInt("id"))
-                .setTitle(object.getString("title"))
-                .setOriginalTitle(object.getString("original_title"))
-                .setOverview(object.getString("overview"))
-                .setBackdropPath(object.getString("backdrop_path"))
-                .setPosterPath(object.getString("poster_path"))
-                .setPopularity(object.getDouble("popularity"))
-                .setVoteAverage(object.getDouble("vote_average"))
-                .setVoteCount(object.getInt("vote_count"));
+                .setId(object.getInt(Movie.TAG_ID))
+                .setTitle(object.getString(Movie.TAG_TITLE))
+                .setOriginalTitle(object.getString(Movie.TAG_ORIGINAL_TITLE))
+                .setOverview(object.getString(Movie.TAG_ORIGINAL_TITLE))
+                .setBackdropPath(object.getString(Movie.TAG_BACKDROP_PATH))
+                .setPosterPath(object.getString(Movie.TAG_POSTER_PATH))
+                .setPopularity(object.getDouble(Movie.TAG_POPULARITY))
+                .setVoteAverage(object.getDouble(Movie.TAG_VOTE_AVERAGE))
+                .setVoteCount(object.getInt(Movie.TAG_VOTE_COUNT));
     }
 
     public MoviesList getMoviesList() throws JSONException {
         MoviesList list = (new MoviesList())
-                .setPage(mObject.getInt("page"))
-                .setTotalPages(mObject.getInt("total_pages"))
-                .setTotalResults(mObject.getInt("total_results"));
-        JSONArray moviesArray = mObject.getJSONArray("results");
+                .setPage(mObject.getInt(MoviesList.TAG_PAGE))
+                .setTotalPages(mObject.getInt(MoviesList.TAG_TOTAL_PAGES))
+                .setTotalResults(mObject.getInt(MoviesList.TAG_TOTAL_RESULTS));
+        JSONArray moviesArray = mObject.getJSONArray(MoviesList.TAG_RESULTS);
         for (int i = 0; i < moviesArray.length(); ++i) {
             JSONObject movieObject = moviesArray.getJSONObject(i);
             Movie movie = getMovie(movieObject);
