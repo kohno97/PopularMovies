@@ -1,5 +1,29 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
-    <string name="most_popular">Most popular</string>
-    <string name="top_rated">Top rated</string>
+    <string name="app_name">
+        Popular Movies
+    </string>
+    <string name="most_popular">
+        Most popular
+    </string>
+    <string name="top_rated">
+        Top rated
+    </string>
+    <string name="err_download_data_title">
+        Something went wrong...
+    </string>
+    <string name="err_download_data_text">
+        Popular Movies could not retrieve data.\n\nPlease check your internet connection and try again.
+    </string>
+    <string name="err_json_format_title">
+        Incorrect format
+    </string>
+    <string name="err_json_format_text">
+        Popular Movies could not parse the response from the movie database.
+    </string>
+    <string name="err_api_title">
+        Movie Database API error
+    </string>
+    <string name="err_api_text">
+        Something went wrong!\n\nPopular Movies cannot process your request.
+    </string>
 </resources>
