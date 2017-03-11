@@ -7,16 +7,13 @@ package kkouteli.popularmovies.utilities;
 import android.net.Uri;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidParameterException;
 
 /**
  * Contains the implementation of the API calls to The Movie DataBase
@@ -99,13 +96,13 @@ public class MovieDbApi {
      */
     public static String getApiKey() throws MovieDbApiException {
         if (sApiKey == null) {
-            URL resUrl = MovieDbApi.class.getClassLoader().getResource(API_KEY_RESOURCE_FILE);
-            if (resUrl == null) {
+            ClassLoader loader = MovieDbApi.class.getClassLoader();
+            InputStream stream = loader.getResourceAsStream(API_KEY_RESOURCE_FILE);
+            if (stream == null) {
                 throw new MovieDbApiException();
             }
-            File file = new File(resUrl.getFile());
             try {
-                BufferedReader br = new BufferedReader(new FileReader(file));
+                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
                 try {
                     sApiKey = br.readLine();
                 } finally {
@@ -204,6 +201,10 @@ public class MovieDbApi {
                 sizePath.equals(IMAGE_SIZE_PATH_500))) {
             throw new MovieDbApiException();
         }
+        // remove leading slash (/) if present
+        if (imagePath.charAt(0) == '/') {
+            imagePath = imagePath.substring(1, imagePath.length());
+        }
         Uri uri = Uri.parse(BASE_IMAGE_URI).buildUpon()
                 .appendPath(sizePath)
                 .appendPath(imagePath)
@@ -289,6 +290,10 @@ public class MovieDbApi {
         }
     }
 
+    /*
+     * Utility method to convert a Uri object to a URL object.
+     * Used by
+     */
     private static URL getUrlFromUri(Uri uri) throws MovieDbApiException {
         String urlString = uri.toString();
         try {
