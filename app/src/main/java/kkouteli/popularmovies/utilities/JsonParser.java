@@ -14,10 +14,8 @@ import org.json.JSONException;
 public class JsonParser {
 
     private JSONObject mObject;
-    private int mCode;
 
-    public JsonParser(String body, int code) throws JSONException {
-        mCode = code;
+    public JsonParser(String body) throws JSONException {
         mObject = new JSONObject(body);
     }
 
