@@ -61,7 +61,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        //private Movie mMovie;
         private ImageView mPosterImageView;
 
         public MovieViewHolder(View itemView) {
@@ -70,15 +69,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         public void bind(Movie movie) {
-            //mMovie = movie;
             try {
-                URL url = MovieDbApi.getMovieDetailsUrl(movie.getId());
+                URL url = MovieDbApi.getMovieImageUrl(movie.getPosterPath());
                 Picasso.with(mPosterImageView.getContext())
                         .load(url.toString())
                         .into(mPosterImageView);
-            }
-            catch (MovieDbApiException me) {
-
+            } catch (MovieDbApiException me) {
             }
         }
 
