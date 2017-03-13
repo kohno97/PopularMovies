@@ -34,9 +34,24 @@ import kkouteli.popularmovies.utilities.MovieDbApiException;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Name used for SharedPreferences
+     */
     private static final String PREFERENCES_NAME = "PopularMoviesPreferences";
+
+    /**
+     * Name for the view preference (popular or top rated)
+     */
     private static final String PREFERENCE_VIEW = "view";
+
+    /**
+     * Tag used for the popular view preference
+     */
     private static final String TAG_POPULAR = "popular";
+
+    /**
+     * Tag used for the top rated view preference
+     */
     private static final String TAG_TOP_RATED = "top_rated";
 
     private RecyclerView mMoviesRecyclerView;
@@ -113,11 +128,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * @return The tag for the selected view. Default to TAG_POPULAR
+     */
     private String getPreferenceViewTag() {
         return getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
                 .getString(PREFERENCE_VIEW, TAG_POPULAR);
     }
 
+    /**
+     * Update the stored preference for the view
+     * @param tag The tag for the selected view (TAG_POPULAR or TAG_TOP_RATED)
+     */
     private void setPreferenceViewTag(String tag) {
         getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
                 .edit()
@@ -125,10 +147,21 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
     }
 
+    /**
+     * Makes the API call for the specified URL in order to fill the recycler view
+     * with poster images
+     * @param url The URL object for the API Call, as return from a MovieDbApi method
+     */
     private void makeApiCall(URL url) {
         (new ApiCallAsyncTask()).execute(url);
     }
 
+    /**
+     * Makes an API call depending on the tag specified in order to fill the recycler view
+     * with poster images. Relies upon makeApiCall(URL) for the actual call.
+     * @param tag The tag for the request. Should be TAG_POPULAR or TAG_TOP_RATED. Defaults
+     *            to TAG_POPULAR
+     */
     private void makeApiCall(String tag) {
         try {
             URL url;
@@ -145,12 +178,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Provides a visual indication of work in progress. Posters or messages are hidden.
+     */
     private void showProgressing() {
         mMessageLayout.setVisibility(View.INVISIBLE);
         mMoviesRecyclerView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Display the poster grid, by interpreting the data provided by the API.
+     * @param apiResult MovieDbApi.Result object return from the execute() method of MovieDbApi
+     */
     private void showPosterGrid(MovieDbApi.Result apiResult) {
         mProgressBar.setVisibility(View.INVISIBLE);
         mMessageLayout.setVisibility(View.INVISIBLE);
@@ -167,6 +207,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Display a pair of title and message. Used for error reporting.
+     * @param title
+     * @param message
+     */
     private void showMessage(String title, String message) {
         mMessageTitle.setText(title);
         mMessageText.setText(message);
@@ -175,6 +220,10 @@ public class MainActivity extends AppCompatActivity {
         mMessageLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Displays the error message returned from an API call.
+     * @param apiResult MovieDbApi.Result object return from the execute() method of MovieDbApi
+     */
     private void showMessage(MovieDbApi.Result apiResult) {
         try {
             JsonParser parser = new JsonParser(apiResult.getResponseBody());
