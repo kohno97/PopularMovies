@@ -35,6 +35,9 @@ import kkouteli.popularmovies.utilities.MovieDbApiException;
 public class MainActivity extends AppCompatActivity {
 
     private static final String PREFERENCES_NAME = "PopularMoviesPreferences";
+    private static final String PREFERENCE_VIEW = "view";
+    private static final String TAG_POPULAR = "popular";
+    private static final String TAG_TOP_RATED = "top_rated";
 
     private RecyclerView mMoviesRecyclerView;
     private ProgressBar mProgressBar;
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        String tag = getPreferenceViewTag();
+        makeApiCall(tag);
     }
 
     @Override
@@ -79,17 +84,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        String tag = getPreferenceViewTag();
+        // if the last view selected was top rated, update the menu to reflect this
+        if (tag.equals(TAG_TOP_RATED)) {
+            menu.findItem(R.id.mitem_top_rated).setChecked(true);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        setCheckedItem(item);
+        item.setChecked(true);
         try {
             URL url;
             if (item.getItemId() == R.id.mitem_top_rated) {
+                setPreferenceViewTag(TAG_TOP_RATED);
                 url = MovieDbApi.getTopRatedUrl();
             } else {
+                setPreferenceViewTag(TAG_POPULAR);
                 url = MovieDbApi.getPopularUrl();
             }
             makeApiCall(url);
@@ -101,8 +113,36 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private String getPreferenceViewTag() {
+        return getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .getString(PREFERENCE_VIEW, TAG_POPULAR);
+    }
+
+    private void setPreferenceViewTag(String tag) {
+        getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString(PREFERENCE_VIEW, tag)
+                .apply();
+    }
+
     private void makeApiCall(URL url) {
         (new ApiCallAsyncTask()).execute(url);
+    }
+
+    private void makeApiCall(String tag) {
+        try {
+            URL url;
+            if (tag.equals(TAG_TOP_RATED)) {
+                url = MovieDbApi.getTopRatedUrl();
+            } else {
+                url = MovieDbApi.getPopularUrl();
+            }
+            makeApiCall(url);
+        } catch (MovieDbApiException e) {
+            showMessage(
+                    getString(R.string.err_api_title),
+                    getString(R.string.err_api_text));
+        }
     }
 
     private void showProgressing() {
@@ -125,10 +165,6 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.err_json_format_title),
                     getString(R.string.err_json_format_text));
         }
-    }
-
-    private void setCheckedItem(MenuItem item) {
-        item.setChecked(true);
     }
 
     private void showMessage(String title, String message) {
@@ -175,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             MovieDbApi.Result result = null;
             try {
                 result = MovieDbApi.execute(params[0]);
-            }             catch (IOException e) {
+            } catch (IOException e) {
                 // empty: swallow the error and allow the function to return null;
             }
             return result;
