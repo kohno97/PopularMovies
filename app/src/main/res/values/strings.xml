@@ -8,6 +8,15 @@
     <string name="top_rated">
         Top rated
     </string>
+    <string name="movie_overview">
+        Overview
+    </string>
+    <string name="movie_rating">
+        Rating
+    </string>
+    <string name="movie_rating_details">
+        Rated %1$2.1f from %2$d votes
+    </string>
     <string name="err_download_data_title">
         Something went wrong...
     </string>

@@ -5,6 +5,7 @@
 package kkouteli.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,14 +63,28 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mPosterImageView;
+        private Movie mMovie;
 
-        public MovieViewHolder(View itemView) {
+        public MovieViewHolder(final View itemView) {
             super(itemView);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.iv_poster);
+            mPosterImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mMovie) {
+                        Intent intent = new Intent(
+                                itemView.getContext(),
+                                MovieDetailsActivity.class);
+                        intent.putExtra(Movie.MOVIE_EXTRA_NAME, mMovie);
+                        itemView.getContext().startActivity(intent);
+                    }
+                }
+            });
         }
 
         public void bind(Movie movie) {
             try {
+                mMovie = movie;
                 URL url = MovieDbApi.getMovieImageUrl(movie.getPosterPath());
                 Picasso.with(mPosterImageView.getContext())
                         .load(url.toString())
