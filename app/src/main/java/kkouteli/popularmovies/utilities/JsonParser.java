@@ -39,6 +39,7 @@ public class JsonParser {
                 .setOverview(object.getString(Movie.TAG_OVERVIEW))
                 .setBackdropPath(object.getString(Movie.TAG_BACKDROP_PATH))
                 .setPosterPath(object.getString(Movie.TAG_POSTER_PATH))
+                .setReleaseDate(object.getString(Movie.TAG_RELEASE_DATE))
                 .setPopularity(object.getDouble(Movie.TAG_POPULARITY))
                 .setVoteAverage(object.getDouble(Movie.TAG_VOTE_AVERAGE))
                 .setVoteCount(object.getInt(Movie.TAG_VOTE_COUNT));
