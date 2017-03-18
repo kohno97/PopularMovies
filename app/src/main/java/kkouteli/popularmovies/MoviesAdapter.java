@@ -34,7 +34,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     /**
      * Updates the list of movies to display
-     * @param movieList Array list of movies
+     * @param movieList ArrayList of movies
      */
     public void setMovieList(ArrayList<Movie> movieList) {
         mMovieList = movieList;
@@ -60,11 +60,24 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return (mMovieList == null) ? 0 : mMovieList.size();
     }
 
+    /**
+     * MovieViewHolder is bound to a Movie object. It contains a single ImageView item for
+     * displaying the movie's poster image, and a reference to the bound movie.
+     *
+     * The "on click" handler the holder assigns to the ImageView "puts" the referenced
+     * Movie as an extra on the intent used to start the movie details activity in order to
+     * pass that information.
+     */
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mPosterImageView;
-        private Movie mMovie;
+        private ImageView mPosterImageView; // Reference to the ImageView used to display the poster
+        private Movie mMovie;               // Reference to the bound Movie object.
 
+        /**
+         * The constructor initializes the reference to the contained image view, and sets up
+         * the click handler for it so that it launches the details activity on click.
+         * @param itemView
+         */
         public MovieViewHolder(final View itemView) {
             super(itemView);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.iv_poster);
@@ -82,6 +95,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             });
         }
 
+        /**
+         * Updates the internal reference to the passed Movie object, then updates the
+         * poster image view with the poster path of the movie.
+         * @param movie Movie object to be bound to
+         */
         public void bind(Movie movie) {
             try {
                 mMovie = movie;
